@@ -1,0 +1,17 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+
+allowBuilds:
+  esbuild: true
+  sharp: true
+  unrs-resolver: true
+
+# Native packages whose install/build scripts we explicitly trust.
+#  - esbuild:      powers tsx + Vitest
+#  - sharp:        Next.js image optimization
+#  - unrs-resolver: ESLint import resolver (used by eslint-config-next)
+onlyBuiltDependencies:
+  - esbuild
+  - sharp
+  - unrs-resolver
