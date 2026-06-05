@@ -66,8 +66,9 @@ pnpm install
 cp apps/api/.env.example apps/api/.env
 cp apps/web/.env.example apps/web/.env.local
 
-# 3. Create the local database (one-time)
-createdb riz_perfume
+# 3. Set up the database (see "Database setup" below), then:
+pnpm --filter @riz/api migration:run   # create the schema
+pnpm --filter @riz/api seed:admin       # create the initial admin (ADMIN_* in .env)
 
 # 4. Run everything in dev (web on :3000, api on :4000)
 pnpm dev
@@ -80,6 +81,31 @@ pnpm dev
 > The API boots even when the database is unreachable (degraded mode); the
 > health endpoint reports the database status and returns `503` until it
 > connects.
+
+## Database setup
+
+This project uses **Homebrew PostgreSQL 18 on port `5433`** with a dedicated
+`riz` role and a `riz_perfume` database. Port 5433 (not the default 5432) avoids
+a clash on dev machines that already run another Postgres on 5432.
+
+```bash
+# Homebrew PG18 ships trust auth locally, so no password is needed to set up:
+psql -h localhost -p 5433 -d postgres -c "CREATE ROLE riz WITH LOGIN PASSWORD 'riz_local_dev' CREATEDB;"
+psql -h localhost -p 5433 -d postgres -c "CREATE DATABASE riz_perfume OWNER riz;"
+```
+
+If your Homebrew PG18 is on the default 5432, set `port = 5433` in
+`$(brew --prefix)/var/postgresql@18/postgresql.conf` and
+`brew services restart postgresql@18` (or just set `DB_PORT=5432` in
+`apps/api/.env` if 5432 is free). Connection settings live in `apps/api/.env`.
+
+### Migrations
+
+```bash
+pnpm --filter @riz/api migration:run        # apply pending migrations
+pnpm --filter @riz/api migration:revert     # roll back the last migration
+pnpm --filter @riz/api migration:generate src/migrations/<Name>   # diff entities → new migration
+```
 
 ## Scripts (run from the repo root)
 

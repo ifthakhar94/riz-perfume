@@ -1,4 +1,5 @@
 import compression from "compression";
+import cookieParser from "cookie-parser";
 import cors from "cors";
 import express, { type Express } from "express";
 import { rateLimit } from "express-rate-limit";
@@ -32,9 +33,10 @@ export const createApp = (): Express => {
   );
   app.use(compression());
 
-  // Body parsing with sane limits
+  // Body + cookie parsing with sane limits
   app.use(express.json({ limit: "1mb" }));
   app.use(express.urlencoded({ extended: true, limit: "1mb" }));
+  app.use(cookieParser());
 
   // Structured request logging
   app.use(pinoHttp({ logger }));

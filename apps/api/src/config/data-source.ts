@@ -3,14 +3,16 @@ import path from "node:path";
 
 import { DataSource } from "typeorm";
 
+import { entities } from "../entities";
 import { env, isDevelopment } from "./env";
 
 /**
  * TypeORM data source for PostgreSQL.
  *
  * `synchronize` is intentionally OFF — schema changes go through migrations so
- * we never risk destructive auto-sync against a real database. Entities and
- * migrations are picked up by glob and will be populated in the next phase.
+ * we never risk destructive auto-sync against a real database. Entities are
+ * registered explicitly (see `../entities`) for deterministic loading;
+ * migrations are discovered by glob.
  */
 export const AppDataSource = new DataSource({
   type: "postgres",
@@ -26,7 +28,7 @@ export const AppDataSource = new DataSource({
   ssl: env.DB_SSL ? { rejectUnauthorized: false } : false,
   synchronize: false,
   logging: isDevelopment ? ["error", "warn", "migration"] : ["error"],
-  entities: [path.join(__dirname, "../entities/**/*.{ts,js}")],
-  migrations: [path.join(__dirname, "../migrations/**/*.{ts,js}")],
+  entities,
+  migrations: [path.join(__dirname, "../migrations/*.{ts,js}")],
   subscribers: [],
 });

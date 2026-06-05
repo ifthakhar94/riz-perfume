@@ -35,9 +35,43 @@ const envSchema = z.object({
     .enum(["true", "false"])
     .default("false")
     .transform((value) => value === "true"),
+
+  // Auth — JWT access token (stateless) + opaque refresh token (DB-backed)
+  JWT_ACCESS_SECRET: z.string().min(16).default("dev-only-access-secret-change-me"),
+  JWT_REFRESH_SECRET: z.string().min(16).default("dev-only-refresh-secret-change-me"),
+  JWT_ACCESS_EXPIRES_IN: z.string().default("15m"),
+  REFRESH_TOKEN_TTL_DAYS: z.coerce.number().int().positive().default(7),
+  REFRESH_COOKIE_NAME: z.string().default("riz_refresh_token"),
+  BCRYPT_ROUNDS: z.coerce.number().int().min(10).max(15).default(12),
+
+  // Initial admin (used by the `seed:admin` script)
+  ADMIN_EMAIL: z.string().email().optional(),
+  ADMIN_PASSWORD: z.string().min(8).optional(),
+  ADMIN_FULLNAME: z.string().optional(),
+  ADMIN_PHONE: z.string().optional(),
 });
 
-const parsed = envSchema.safeParse(process.env);
+const parsed = envSchema
+  .superRefine((value, ctx) => {
+    // Never ship the development JWT secrets to production.
+    if (value.NODE_ENV === "production") {
+      if (value.JWT_ACCESS_SECRET.startsWith("dev-only")) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["JWT_ACCESS_SECRET"],
+          message: "must be set in production",
+        });
+      }
+      if (value.JWT_REFRESH_SECRET.startsWith("dev-only")) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["JWT_REFRESH_SECRET"],
+          message: "must be set in production",
+        });
+      }
+    }
+  })
+  .safeParse(process.env);
 
 if (!parsed.success) {
   const issues = parsed.error.flatten().fieldErrors;
