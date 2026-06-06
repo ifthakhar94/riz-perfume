@@ -33,8 +33,15 @@ export const createApp = (): Express => {
   );
   app.use(compression());
 
-  // Body + cookie parsing with sane limits
-  app.use(express.json({ limit: "1mb" }));
+  // Body + cookie parsing with sane limits.
+  // Accept text/plain too, so clients that forget to set application/json
+  // (e.g. a misconfigured Postman request) still get their JSON parsed.
+  app.use(
+    express.json({
+      limit: "1mb",
+      type: ["application/json", "application/*+json", "text/plain"],
+    }),
+  );
   app.use(express.urlencoded({ extended: true, limit: "1mb" }));
   app.use(cookieParser());
 
