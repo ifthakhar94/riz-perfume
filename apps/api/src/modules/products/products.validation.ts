@@ -30,7 +30,7 @@ export const createProductSchema = z.object({
   middleNotes: nullableStringArray,
   baseNotes: nullableStringArray,
   mainAccords: nullableStringArray,
-  description: nullableText(20000),
+  description: nullableText(50000),
   isActive: z.boolean().optional(),
   categoryIds: z.array(z.coerce.number().int().positive()).max(50).optional(),
   relatedProductIds: z.array(z.coerce.number().int().positive()).max(50).optional(),

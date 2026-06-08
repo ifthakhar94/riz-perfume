@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm --filter @riz/api lint)",
+      "Bash(pnpm --filter @riz/api build)",
+      "Bash(echo \"exit $?\")"
+    ]
+  }
+}

@@ -1,3 +1,35 @@
+/** Request payload to create/update a product (admin). */
+export interface ProductUpsertInput {
+  name: string;
+  slug?: string;
+  imageUrl?: string | null;
+  imageAlt?: string | null;
+  metaTitle?: string | null;
+  metaDescription?: string | null;
+  ogTitle?: string | null;
+  ogDescription?: string | null;
+  ogImageUrl?: string | null;
+  inspiredBy?: string | null;
+  topNotes?: string[] | null;
+  middleNotes?: string[] | null;
+  baseNotes?: string[] | null;
+  mainAccords?: string[] | null;
+  description?: string | null;
+  isActive?: boolean;
+  categoryIds?: number[];
+  relatedProductIds?: number[];
+}
+
+/** Request payload to create/update a product variant (admin). */
+export interface VariantUpsertInput {
+  sizeId: number;
+  typeId: number;
+  price: number;
+  sku: string;
+  stockQuantity?: number;
+  isActive?: boolean;
+}
+
 export interface SizeDto {
   id: number;
   name: string;
