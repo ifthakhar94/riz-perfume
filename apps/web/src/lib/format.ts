@@ -6,6 +6,10 @@ export const formatBDT = (value: number) =>
 export const formatTaka = (value: number) =>
   `৳${value.toLocaleString("en-US", { maximumFractionDigits: 0 })}`;
 
+/** Storefront taka per the Figma design (e.g. "1,250.00 Tk"). */
+export const formatTk = (value: number) =>
+  `${value.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} Tk`;
+
 /** Date + time (client-side; e.g. "07 Jun 2026, 14:32"). */
 export const formatDateTime = (iso: string) =>
   new Date(iso).toLocaleString("en-GB", {

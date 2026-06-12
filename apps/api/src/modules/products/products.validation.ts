@@ -45,6 +45,8 @@ export const listProductsQuerySchema = z.object({
   pageSize: z.coerce.number().int().min(1).max(100).optional(),
   search: z.string().trim().max(255).optional(),
   categoryId: z.coerce.number().int().positive().optional(),
+  /** Category slug filter (e.g. "wood") — preferred by the storefront. */
+  category: z.string().trim().min(1).max(180).optional(),
   includeInactive: z.coerce.boolean().optional(),
 });
 

@@ -15,6 +15,7 @@ export const listProducts = async (req: Request, res: Response): Promise<void> =
     take,
     search: typeof req.query.search === "string" ? req.query.search : undefined,
     categoryId: req.query.categoryId ? Number(req.query.categoryId) : undefined,
+    categorySlug: typeof req.query.category === "string" ? req.query.category : undefined,
     includeInactive: queryFlag(req.query.includeInactive),
   });
   const body: ApiSuccess<Paginated<ProductListItemDto>> = {

@@ -43,6 +43,8 @@ export interface TypeDto {
 export interface CategoryDto {
   id: number;
   name: string;
+  /** URL-safe identifier (e.g. "wood") — generated from the name. */
+  slug: string;
   isActive: boolean;
   createdAt: string;
   updatedAt: string;

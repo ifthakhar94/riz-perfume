@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 
 import { baseApi } from "./api/baseApi";
 import { authReducer } from "./auth/authSlice";
+import { cartReducer } from "./cart/cartSlice";
 
 /**
  * Store factory. In the Next.js App Router we create a fresh store per request
@@ -12,6 +13,7 @@ export const makeStore = () =>
     reducer: {
       [baseApi.reducerPath]: baseApi.reducer,
       auth: authReducer,
+      cart: cartReducer,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(baseApi.middleware),
   });

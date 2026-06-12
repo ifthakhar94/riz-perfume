@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 
 import { queryFlag } from "../../common/http/query";
+import { slugify } from "../../common/slug";
 import { AppDataSource } from "../../config/data-source";
 import { Category } from "../../entities/category.entity";
 import { AppError } from "../../utils/app-error";
@@ -18,8 +19,9 @@ export const listCategories = async (req: Request, res: Response): Promise<void>
 };
 
 export const createCategory = async (req: Request, res: Response): Promise<void> => {
+  const name: string = req.body.name;
   const category = await repo().save(
-    repo().create({ name: req.body.name, isActive: req.body.isActive ?? true }),
+    repo().create({ name, slug: slugify(name), isActive: req.body.isActive ?? true }),
   );
   res.status(201).json({ success: true, data: category });
 };
@@ -27,7 +29,11 @@ export const createCategory = async (req: Request, res: Response): Promise<void>
 export const updateCategory = async (req: Request, res: Response): Promise<void> => {
   const category = await repo().findOne({ where: { id: Number(req.params.id) } });
   if (!category) throw AppError.notFound("Category not found");
-  if (req.body.name !== undefined) category.name = req.body.name;
+  if (req.body.name !== undefined) {
+    category.name = req.body.name;
+    // Keep the URL identifier in sync with the name.
+    category.slug = slugify(req.body.name);
+  }
   if (req.body.isActive !== undefined) category.isActive = req.body.isActive;
   await repo().save(category);
   res.status(200).json({ success: true, data: category });

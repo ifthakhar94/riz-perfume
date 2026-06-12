@@ -13,6 +13,8 @@ export interface ProductListParams {
   pageSize?: number;
   search?: string;
   categoryId?: number;
+  /** Category slug filter (e.g. "wood") — preferred by the storefront. */
+  category?: string;
   includeInactive?: boolean;
 }
 
@@ -26,6 +28,13 @@ export const productsApi = baseApi.injectEndpoints({
 
     getProductById: builder.query<ProductDetailDto, number>({
       query: (id) => `/products/by-id/${id}`,
+      transformResponse: (response: ApiSuccess<ProductDetailDto>) => response.data,
+      providesTags: ["Product"],
+    }),
+
+    /** Public product detail (incl. variants) — used by the storefront. */
+    getProductBySlug: builder.query<ProductDetailDto, string>({
+      query: (slug) => `/products/${encodeURIComponent(slug)}`,
       transformResponse: (response: ApiSuccess<ProductDetailDto>) => response.data,
       providesTags: ["Product"],
     }),
@@ -55,6 +64,8 @@ export const productsApi = baseApi.injectEndpoints({
 export const {
   useGetProductsQuery,
   useGetProductByIdQuery,
+  useGetProductBySlugQuery,
+  useLazyGetProductBySlugQuery,
   useCreateProductMutation,
   useUpdateProductMutation,
   useDeleteProductMutation,

@@ -72,6 +72,21 @@
   --radius-xl: calc(var(--radius) + 4px);
   --font-sans: var(--font-jost), ui-sans-serif, system-ui, sans-serif;
   --font-serif: var(--font-libre), Georgia, "Times New Roman", serif;
+  /* Storefront palette (Figma): secondary grey + blush badge background. */
+  --color-brand-grey: #53545c;
+  --color-brand-blush: #f9e8eb;
+  /* Storefront announcement ticker (marquee). Track holds two identical
+     groups, so -50% yields a seamless infinite loop. */
+  --animate-ticker: ticker 40s linear infinite;
+
+  @keyframes ticker {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
 }
 
 @layer base {

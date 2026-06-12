@@ -20,6 +20,10 @@ const nextConfig: NextConfig = {
   outputFileTracingRoot: fileURLToPath(new URL("../../", import.meta.url)),
   // Compile the shared workspace package as part of the app build.
   transpilePackages: ["@riz/shared"],
+  // Product imagery is hosted on Cloudinary (uploaded via the admin dashboard).
+  images: {
+    remotePatterns: [{ protocol: "https", hostname: "res.cloudinary.com" }],
+  },
   async headers() {
     return [
       {

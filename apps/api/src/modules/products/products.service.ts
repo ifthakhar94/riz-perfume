@@ -73,6 +73,8 @@ export interface ListProductsParams {
   take: number;
   search?: string;
   categoryId?: number;
+  /** Category slug (e.g. "wood") — the storefront's URL-friendly filter. */
+  categorySlug?: string;
   includeInactive?: boolean;
 }
 
@@ -92,6 +94,16 @@ export const productsService = {
       qb.andWhere(
         "product.id IN (SELECT pc2.product_id FROM product_categories pc2 WHERE pc2.category_id = :categoryId)",
         { categoryId: params.categoryId },
+      );
+    }
+    if (params.categorySlug) {
+      qb.andWhere(
+        `product.id IN (
+          SELECT pc3.product_id FROM product_categories pc3
+          JOIN categories c3 ON c3.id = pc3.category_id
+          WHERE c3.slug = :categorySlug
+        )`,
+        { categorySlug: params.categorySlug },
       );
     }
 

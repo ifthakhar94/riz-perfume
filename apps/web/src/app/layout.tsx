@@ -17,13 +17,14 @@ const libreBaskerville = Libre_Baskerville({
 });
 
 const SITE_NAME = "Riz Perfume";
+const SITE_TITLE = `${SITE_NAME} — Luxury Fragrances`;
 const SITE_DESCRIPTION =
-  "Riz Perfume — luxury fragrances crafted to leave a lasting impression. Our online boutique is launching soon.";
+  "Riz Perfume — luxury fragrances crafted to leave a lasting impression. Discover our curated collection of perfumes and combos.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.NEXT_PUBLIC_SITE_URL),
   title: {
-    default: `${SITE_NAME} — Coming Soon`,
+    default: SITE_TITLE,
     template: `%s | ${SITE_NAME}`,
   },
   description: SITE_DESCRIPTION,
@@ -46,12 +47,12 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: env.NEXT_PUBLIC_SITE_URL,
     siteName: SITE_NAME,
-    title: `${SITE_NAME} — Coming Soon`,
+    title: SITE_TITLE,
     description: SITE_DESCRIPTION,
   },
   twitter: {
     card: "summary_large_image",
-    title: `${SITE_NAME} — Coming Soon`,
+    title: SITE_TITLE,
     description: SITE_DESCRIPTION,
   },
   robots: {
@@ -68,7 +69,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0a0a0a",
+  themeColor: "#c41b35",
   width: "device-width",
   initialScale: 1,
 };
