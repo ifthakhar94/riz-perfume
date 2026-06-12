@@ -8,6 +8,9 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),
+      // Mirror tsconfig baseUrl resolution for static asset imports
+      // (e.g. `import img from "public/hero-slider/slider-1.jpg"`).
+      public: fileURLToPath(new URL("./public", import.meta.url)),
     },
   },
   test: {

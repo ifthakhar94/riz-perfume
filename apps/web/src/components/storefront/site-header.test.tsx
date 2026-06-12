@@ -27,7 +27,8 @@ describe("SiteHeader", () => {
 
   it("marks the current page in the nav", () => {
     renderHeader();
-    expect(screen.getByRole("link", { name: /home/i })).toHaveAttribute("aria-current", "page");
+    // Exact name: /home/i would also match the logo ("Riz Perfume — home").
+    expect(screen.getByRole("link", { name: "Home" })).toHaveAttribute("aria-current", "page");
   });
 
   it("renders search, account, and cart controls (no wishlist)", () => {

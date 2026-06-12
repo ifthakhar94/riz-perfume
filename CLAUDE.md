@@ -58,7 +58,9 @@ context — **update it whenever decisions are made or storefront sections ship.
 - Match existing code style; reuse components/utilities before adding new ones.
 - Frontend data access only via RTK Query slices (no ad-hoc fetch/axios).
 - Shared request/response types in @riz/shared.
-- Conventional commits; never commit unless asked.
+- Conventional commits; never commit unless asked. commitlint enforces
+  scope-enum: **web, api, shared, config, repo, ci, deps, release**
+  (cross-cutting changes → `repo`). Subject must be lower-case type(scope).
 - Tests: vitest + @testing-library, colocated `*.test.tsx`.
 - Verification: `pnpm typecheck` / `test` / `lint` in `apps/web`.
 

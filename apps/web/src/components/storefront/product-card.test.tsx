@@ -57,10 +57,12 @@ const setup = () => {
 describe("ProductCard", () => {
   it("shows name, link to the product page, and the from-price", () => {
     setup();
-    expect(screen.getByRole("link", { name: "Noir Intense" })).toHaveAttribute(
-      "href",
-      "/products/noir-intense",
-    );
+    // Two links share the accessible name: the image and the product name.
+    const links = screen.getAllByRole("link", { name: "Noir Intense" });
+    expect(links.length).toBeGreaterThan(0);
+    for (const link of links) {
+      expect(link).toHaveAttribute("href", "/products/noir-intense");
+    }
     // Closed picker with known variants → BDT price range.
     expect(screen.getByTestId("price-line")).toHaveTextContent("BDT 850.00 - BDT 1,250.00");
   });
